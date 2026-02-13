@@ -85,8 +85,17 @@ button{
 <div class="card" id="card">
   <h2>happy valentine ♡</h2>
   <p id="text">aku punya sesuatu buat kamu…</p>
-  <button onclick="showMessage()">open message</button>
+  <button onclick=function showMessage(){
+  typeText(msg,"text",25); // ketik lebih cepat
+  document.getElementById("music").style.display="block";
 
+  // ending muncul setelah 25 detik aja (tidak tergantung panjang teks)
+  setTimeout(()=>{
+    document.getElementById("card").style.display="none";
+    document.getElementById("ending").classList.add("show");
+  }, 25000);
+}
+    
   <!-- MUSIC YOUTUBE -->
   <div id="music" style="display:none;margin-top:15px">
     <iframe width="0" height="0"
