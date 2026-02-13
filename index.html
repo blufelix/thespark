@@ -1,260 +1,242 @@
- <!DOCTYPE html>
- <html lang="id">
- <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>for you ♡</title>
- 
- <style>
- body{
-   margin:0;
--  background:#f7f3f5;
-+  background:
-+    radial-gradient(circle at 12% 20%, rgba(255, 214, 224, 0.5), transparent 35%),
-+    radial-gradient(circle at 85% 10%, rgba(255, 245, 247, 0.85), transparent 42%),
-+    radial-gradient(circle at 20% 88%, rgba(255, 228, 236, 0.6), transparent 36%),
-+    linear-gradient(165deg, #f8f1f4 0%, #fefbfd 55%, #f6ecf1 100%);
-   color:#2a2a2a;
-   font-family:"Georgia",serif;
-   display:flex;
-   justify-content:center;
-   align-items:center;
-   height:100vh;
-   text-align:center;
-   overflow:hidden;
- }
- 
-+body::before,
-+body::after{
-+  content:"";
-+  position:fixed;
-+  width:420px;
-+  height:420px;
-+  border-radius:50%;
-+  filter:blur(70px);
-+  pointer-events:none;
-+  z-index:0;
-+}
-+
-+body::before{
-+  background:rgba(255, 198, 216, 0.34);
-+  top:-140px;
-+  left:-120px;
-+}
-+
-+body::after{
-+  background:rgba(230, 198, 255, 0.24);
-+  right:-140px;
-+  bottom:-150px;
-+}
-+
- /* layer bintang */
- .stars{
-   position:fixed;
-   inset:0;
-   pointer-events:none;
-   overflow:hidden;
-+  z-index:0;
- }
- 
- .star{
-   position:absolute;
-   width:4px;
-   height:4px;
-   background:#ffd6e0;
-   border-radius:50%;
-   opacity:0;
-   animation:twinkle 4s infinite ease-in-out;
- }
- 
- @keyframes twinkle{
-   0%,100%{opacity:0; transform:scale(0.5)}
-   50%{opacity:1; transform:scale(1)}
- }
- 
--.screen{display:none; max-width:720px; width:90%; padding:40px}
-+.screen{display:none; max-width:720px; width:90%; padding:40px; position:relative; z-index:1; backdrop-filter:blur(2px)}
- .show{display:block}
- 
- /* kertas lebih lebar */
- .paper{
--  background:white;
-+  background:linear-gradient(180deg, rgba(255,255,255,0.95), rgba(255,255,255,0.9));
-   padding:48px 48px;
--  border-radius:18px;
--  box-shadow:0 25px 70px rgba(0,0,0,0.08);
-+  border-radius:20px;
-+  border:1px solid rgba(255,255,255,0.8);
-+  box-shadow:0 25px 70px rgba(73, 31, 52, 0.12);
-   text-align:left;
-   line-height:1.9;
-   min-height:300px;
-   position:relative;
- }
- 
- /* cursor blink */
- .cursor{
-   display:inline-block;
--  width:2px;
--  height:1em;
--  background:#b76e79;
-+  width:10px;
-+  height:1.1em;
-+  border-right:2px solid #b76e79;
-+  border-radius:3px;
-+  transform:translateY(2px);
-   margin-left:4px;
-   animation:blink 1s infinite;
--  vertical-align:bottom;
-+  vertical-align:baseline;
- }
- 
- @keyframes blink{
-   0%,50%,100%{opacity:1}
-   25%,75%{opacity:0}
- }
- 
- h2{
-   text-align:center;
-   font-weight:500;
-   margin-bottom:24px;
- }
- 
- button{
-   margin-top:32px;
-   padding:12px 26px;
-   border-radius:999px;
-   border:1px solid #e7cfd8;
-   background:#fff;
-   color:#b76e79;
-   cursor:pointer;
-   transition:.3s;
- }
- button:hover{background:#fff0f4}
- 
-+input{
-+  background:rgba(255,255,255,0.8);
-+  box-shadow:0 10px 35px rgba(120, 78, 98, 0.12);
-+}
-+
- #ending{
-   font-size:24px;
-   opacity:0;
-   transition:opacity 3s ease;
-   color:#b76e79;
- }
- #ending.show{opacity:1}
- 
- .small{font-size:13px; opacity:.6; margin-top:12px; letter-spacing:2px}
- .tap{color:#b76e79; opacity:.7}
- </style>
- </head>
- 
- <body>
- 
- <!-- bintang background -->
- <div class="stars" id="stars"></div>
- 
- <div id="lock" class="screen show">
-   <p>enter the date ♡</p>
-   <input id="pass" type="password" style="padding:10px;border-radius:10px;border:1px solid #e7cfd8;text-align:center">
- </div>
- 
- <div id="tap" class="screen">
-   <p class="tap">tap to open ♡</p>
- </div>
- 
- <div id="card" class="screen">
-   <h2>happy valentine ♡</h2>
-   <div class="paper">
--    <p id="text"></p><span class="cursor" id="cursor"></span>
-+    <p id="text"><span class="cursor" id="cursor"></span></p>
-   </div>
-   <button onclick="showMessage()">open message</button>
- 
-   <iframe id="music" width="0" height="0" src="" allow="autoplay"></iframe>
- </div>
- 
- <div id="ending" class="screen">
-   <div>i love you ♡</div>
-   <div class="small">and in every universe, i would still choose you.</div>
- </div>
- 
- <script>
- const PASSWORD="080925";
- 
- const msg=`Dear Kak Adam…
- 
- Sayang… Happy valentine yaa. i know kamu bilang kamu ga prefer buat merayakan valentine krn setiap hari adalah hari kasih sayang. aku setuju, tp di moment ini setidaknya aku mau memberikan apresiasi karena kamu selalu sayang sama aku. Selama 6 bulan kita pacaran, kalo boleh dibilang banyak banget up and down nya. kadang kita berantem, kadang kita beda pendapat. but, its okayyy karena at least, kita tetap menjadi “kita” despite apa yang kita hadapi. Selama pacaran sama kamu, its one of the most beautiful things that i ever had in my life. aku sangat bahagia sayang, i meant it. mungkin juga ini yang jadi alasan aku mau lahir di dunia, karena dicintai sama kamu rasanya se-menyenangkan dan se-membahagiakan ini. kalo aku disuruh lahir lagi dan harus menempuh kesusahan yang sama untuk sama kamu in the end of the time, i definitely will do it again. you are… one of a kind that sees everything about me and still choose to stay. and i am very thankful for that.
- 
- sejak sama kamu juga, aku jadi ga sabar untuk terus menantikan masa depan yang dulu takut untuk aku hadapi. makasih ya sayang, udah lahir di dunia ini dan ketemu aku. makasih udah mau menerima aku dan menjadikan aku milikmu. aku sayaaaaang banget sama kamu. aku akan berusaha lebih baik lagi untuk jadi pacar yang baik buat kamu, so that i can make you happy the way you made me happy. temenin aku terus ya sayaaang? untuk 1 tahun, 10 tahun, bahkan 1000 tahun kedepannya. kita sama-sama terus ya kedepannya? aku mau sama kamu terus pokoknyaaaaa. i love you the most sayanggggg.
- 
- sincerely,
- yours ♡`;
- 
- // password
- 
-@@ -152,55 +189,61 @@ document.getElementById("pass").addEventListener("keypress",e=>{
-     show("tap");
-   }
- });
- 
- // tap
- 
- document.getElementById("tap").onclick=()=>show("card");
- 
- function showMessage(){
-   document.getElementById("music").src=
-   "https://www.youtube.com/embed/4-9lZc4kW9A?autoplay=1&loop=1&playlist=4-9lZc4kW9A";
- 
-   createStars();
-   typeText(msg,"text",55);
- }
- 
- function show(id){
-   document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show"));
-   document.getElementById(id).classList.add("show");
- }
- 
- function typeText(text,id,speed){
-   let i=0;
-   const el=document.getElementById(id);
-   const cursor=document.getElementById("cursor");
--  el.innerHTML="";
-+  el.textContent="";
-+  el.appendChild(cursor);
- 
-   function typing(){
-     if(i<text.length){
--      el.innerHTML += text[i]==="\n"?"<br>":text[i];
-+      const char=text[i];
-+      if(char==="\n"){
-+        el.insertBefore(document.createElement("br"),cursor);
-+      }else{
-+        el.insertBefore(document.createTextNode(char),cursor);
-+      }
-       i++;
-       setTimeout(typing,speed);
-     }else{
-       setTimeout(()=>{
-         cursor.style.display="none";
-         show("ending");
-         document.getElementById("ending").classList.add("show");
-       },5000);
-     }
-   }
- 
-   typing();
- }
- 
- // buat bintang random
- function createStars(){
-   const container=document.getElementById("stars");
-   container.innerHTML="";
- 
-   for(let i=0;i<40;i++){
-     const s=document.createElement("div");
-     s.className="star";
-     s.style.left=Math.random()*100+"vw";
-     s.style.top=Math.random()*100+"vh";
-     s.style.animationDelay=(Math.random()*4)+"s";
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>for you ♡</title>
+<style>
+  body{
+    margin:0;
+    background:#f7f3f5;
+    color:#2a2a2a;
+    font-family:"Georgia",serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    height:100vh;
+    text-align:center;
+    overflow:hidden;
+  }
+
+  .stars{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+
+  .star{
+    position:absolute;
+    width:4px;
+    height:4px;
+    background:#ffd6e0;
+    border-radius:50%;
+    opacity:0;
+    animation:twinkle 4s infinite ease-in-out;
+  }
+
+  @keyframes twinkle{
+    0%,100%{opacity:0; transform:scale(0.5)}
+    50%{opacity:1; transform:scale(1)}
+  }
+
+  .screen{display:none; max-width:720px; width:90%; padding:40px}
+  .show{display:block}
+
+  .paper{
+    background:white;
+    padding:48px;
+    border-radius:18px;
+    box-shadow:0 25px 70px rgba(0,0,0,0.08);
+    text-align:left;
+    line-height:1.9;
+    min-height:300px;
+    position:relative;
+  }
+
+  .cursor{
+    display:inline-block;
+    width:2px;
+    height:1em;
+    background:#b76e79;
+    margin-left:4px;
+    animation:blink 1s infinite;
+    vertical-align:bottom;
+  }
+
+  @keyframes blink{
+    0%,50%,100%{opacity:1}
+    25%,75%{opacity:0}
+  }
+
+  h2{
+    text-align:center;
+    font-weight:500;
+    margin-bottom:24px;
+  }
+
+  button{
+    margin-top:32px;
+    padding:12px 26px;
+    border-radius:999px;
+    border:1px solid #e7cfd8;
+    background:#fff;
+    color:#b76e79;
+    cursor:pointer;
+    transition:.3s;
+  }
+  button:hover{background:#fff0f4}
+
+  #ending{
+    font-size:24px;
+    opacity:0;
+    transition:opacity 3s ease;
+    color:#b76e79;
+  }
+  #ending.show{opacity:1}
+
+  .small{font-size:13px; opacity:.6; margin-top:12px; letter-spacing:2px}
+  .tap{color:#b76e79; opacity:.7}
+
+  .hl{
+    color:#9a4f67;
+    font-weight:600;
+    text-shadow:0 0 1px rgba(154,79,103,.15);
+  }
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+
+<div id="lock" class="screen show">
+  <p>enter the date ♡</p>
+  <input id="pass" type="password" style="padding:10px;border-radius:10px;border:1px solid #e7cfd8;text-align:center" />
+</div>
+
+<div id="tap" class="screen">
+  <p class="tap">tap to open ♡</p>
+</div>
+
+<div id="card" class="screen">
+  <h2>happy valentine ♡</h2>
+  <div class="paper">
+    <p id="text"></p><span class="cursor" id="cursor"></span>
+  </div>
+  <button onclick="showMessage()">open message</button>
+  <iframe id="music" width="0" height="0" src="" allow="autoplay"></iframe>
+</div>
+
+<div id="ending" class="screen">
+  <div>i love you ♡</div>
+  <div class="small">and in every universe, i would still choose you.</div>
+</div>
+
+<script>
+const PASSWORD="080925";
+
+const msg=`Dear Kak Adam…
+
+Sayang… Happy valentine yaa. i know kamu bilang kamu ga prefer buat merayakan valentine krn setiap hari adalah hari kasih sayang. aku setuju, tp di moment ini setidaknya aku mau memberikan apresiasi karena kamu selalu sayang sama aku. Selama 6 bulan kita pacaran, kalo boleh dibilang banyak banget up and down nya. kadang kita berantem, kadang kita beda pendapat. but, its okayyy karena at least, kita tetap menjadi “kita” despite apa yang kita hadapi. Selama pacaran sama kamu, its one of the most beautiful things that i ever had in my life. aku sangat bahagia sayang, i meant it. mungkin juga ini yang jadi alasan aku mau lahir di dunia, karena dicintai sama kamu rasanya se-menyenangkan dan se-membahagiakan ini. kalo aku disuruh lahir lagi dan harus menempuh kesusahan yang sama untuk sama kamu in the end of the time, i definitely will do it again. you are… one of a kind that sees everything about me and still choose to stay. and i am very thankful for that.
+
+sejak sama kamu juga, aku jadi ga sabar untuk terus menantikan masa depan yang dulu takut untuk aku hadapi. makasih ya sayang, udah lahir di dunia ini dan ketemu aku. makasih udah mau menerima aku dan menjadikan aku milikmu. aku sayaaaaang banget sama kamu. aku akan berusaha lebih baik lagi untuk jadi pacar yang baik buat kamu, so that i can make you happy the way you made me happy. temenin aku terus ya sayaaang? untuk 1 tahun, 10 tahun, bahkan 1000 tahun kedepannya. kita sama-sama terus ya kedepannya? aku mau sama kamu terus pokoknyaaaaa. i love you the most sayanggggg.
+
+sincerely,
+yours ♡`;
+
+const highlights=[
+  "most beautiful things",
+  "one of a kind",
+  "very thankful",
+  "i love you the most"
+];
+
+document.getElementById("pass").addEventListener("keypress",e=>{
+  if(e.key==="Enter" && e.target.value===PASSWORD){
+    show("tap");
+  }
+});
+
+document.getElementById("tap").onclick=()=>show("card");
+
+function showMessage(){
+  document.getElementById("music").src=
+  "https://www.youtube.com/embed/4-9lZc4kW9A?autoplay=1&loop=1&playlist=4-9lZc4kW9A";
+
+  createStars();
+  typeText(msg,"text",55);
+}
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
+}
+
+function findHighlightAt(text,index){
+  const lower=text.toLowerCase();
+  for(const phrase of highlights){
+    if(lower.startsWith(phrase.toLowerCase(),index)) return phrase;
+  }
+  return null;
+}
+
+function typeText(text,id,speed){
+  let i=0;
+  const el=document.getElementById(id);
+  const cursor=document.getElementById("cursor");
+  el.innerHTML="";
+
+  function insertChunk(chunk,isHighlight=false){
+    if(isHighlight){
+      const span=document.createElement("span");
+      span.className="hl";
+      span.textContent=chunk;
+      el.appendChild(span);
+      return;
+    }
+    el.appendChild(document.createTextNode(chunk));
+  }
+
+  function typing(){
+    if(i<text.length){
+      const phrase=findHighlightAt(text,i);
+      if(phrase){
+        insertChunk(text.slice(i,i+phrase.length),true);
+        i+=phrase.length;
+      }else if(text[i]==="\n"){
+        el.appendChild(document.createElement("br"));
+        i++;
+      }else{
+        insertChunk(text[i]);
+        i++;
+      }
+      el.appendChild(cursor);
+      setTimeout(typing,speed);
+    }else{
+      setTimeout(()=>{
+        cursor.style.display="none";
+        show("ending");
+        document.getElementById("ending").classList.add("show");
+      },5000);
+    }
+  }
+
+  cursor.style.display="inline-block";
+  typing();
+}
+
+function createStars(){
+  const container=document.getElementById("stars");
+  container.innerHTML="";
+
+  for(let i=0;i<40;i++){
+    const s=document.createElement("div");
+    s.className="star";
+    s.style.left=Math.random()*100+"vw";
+    s.style.top=Math.random()*100+"vh";
+    s.style.animationDelay=(Math.random()*4)+"s";
+    container.appendChild(s);
+  }
+}
+</script>
+</body>
+</html>
