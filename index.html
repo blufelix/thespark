@@ -49,6 +49,7 @@ body{
   background:rgba(255,255,255,.05);
   backdrop-filter:blur(12px);
   text-align:center;
+  transition:opacity 1.5s ease;
 }
 button{
   margin-top:20px;padding:10px 20px;
@@ -59,12 +60,24 @@ button{
 /* ENDING */
 .ending{
   position:absolute;inset:0;
-  display:flex;justify-content:center;align-items:center;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
   background:#0f0f14;
-  font-size:18px;opacity:0;
-  transition:opacity 2s;
+  font-size:20px;opacity:0;
+  transition:opacity 2.5s ease, background 4s ease;
+  text-align:center;
 }
-.ending.show{opacity:1}
+.ending.show{
+  opacity:1;
+  background:#1a0f17;
+}
+
+.date{
+  margin-top:12px;
+  font-size:13px;
+  opacity:.6;
+  letter-spacing:2px;
+}
 </style>
 </head>
 
@@ -85,21 +98,12 @@ button{
 <div class="card" id="card">
   <h2>happy valentine ♡</h2>
   <p id="text">aku punya sesuatu buat kamu…</p>
-  <button onclick=function showMessage(){
-  typeText(msg,"text",25); // ketik lebih cepat
-  document.getElementById("music").style.display="block";
+  <button onclick="showMessage()">open message</button>
 
-  // ending muncul setelah 25 detik aja (tidak tergantung panjang teks)
-  setTimeout(()=>{
-    document.getElementById("card").style.display="none";
-    document.getElementById("ending").classList.add("show");
-  }, 25000);
-}
-    
   <!-- MUSIC YOUTUBE -->
   <div id="music" style="display:none;margin-top:15px">
     <iframe width="0" height="0"
-      src="https://https://youtu.be/Hsl9IZxxY0I?si=4p-Wa_yHzJi0cG4e?autoplay=1&loop=1&playlist=4-9lZc4kW9A"
+      src="https://www.youtube.com/embed/4-9lZc4kW9A?autoplay=1&loop=1&playlist=4-9lZc4kW9A"
       frameborder="0"
       allow="autoplay">
     </iframe>
@@ -108,18 +112,17 @@ button{
 
 <!-- ENDING -->
 <div class="ending" id="ending">
-  see you in every lifetime ♡
+  <div>see you in every lifetime ♡</div>
+  <div class="date">14 · 02 · forever</div>
 </div>
 
 <script>
 const PASSWORD="080925";
 
 document.getElementById("pass").addEventListener("keypress",e=>{
-  if(e.key==="Enter"){
-    if(e.target.value===PASSWORD){
-      document.getElementById("lock").style.display="none";
-      document.getElementById("opening").style.display="flex";
-    }
+  if(e.key==="Enter" && e.target.value===PASSWORD){
+    document.getElementById("lock").style.display="none";
+    document.getElementById("opening").style.display="flex";
   }
 });
 
@@ -138,13 +141,16 @@ function openCard(){
 }
 
 function showMessage(){
-  typeText(msg,"text",30);
+  typeText(msg,"text",22);
   document.getElementById("music").style.display="block";
 
   setTimeout(()=>{
-    document.getElementById("card").style.display="none";
-    document.getElementById("ending").classList.add("show");
-  }, msg.length*30 + 2000);
+    document.getElementById("card").style.opacity="0";
+    setTimeout(()=>{
+      document.getElementById("card").style.display="none";
+      document.getElementById("ending").classList.add("show");
+    },1500);
+  }, 22000);
 }
 
 function typeText(text,id,speed){
