@@ -1,167 +1,155 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>for you ♡</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you ♡</title>
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; font-family:"Segoe UI",sans-serif; }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",sans-serif}
 
-    body{
-      height:100vh;
-      background:#0f0f14;
-      color:#f5f5f7;
-      overflow:hidden;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-    }
+body{
+  height:100vh;
+  background:#0f0f14;
+  color:#f5f5f7;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
 
-    .lock{
-      position:absolute; inset:0;
-      display:flex; flex-direction:column;
-      justify-content:center; align-items:center;
-      background:#0f0f14; z-index:20;
-      transition:.8s;
-    }
-    .lock.hidden{opacity:0; visibility:hidden;}
+/* PASSWORD */
+.lock{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  background:#0f0f14;z-index:20;
+}
+.lock input{
+  margin-top:15px;padding:10px;
+  border-radius:10px;border:1px solid rgba(255,255,255,.3);
+  background:transparent;color:white;text-align:center;
+}
 
-    .lock input{
-      margin-top:16px; padding:10px 14px;
-      border-radius:10px; border:1px solid rgba(255,255,255,.2);
-      background:transparent; color:#fff; text-align:center;
-      outline:none; width:140px;
-    }
+/* OPENING */
+.opening{
+  position:absolute;inset:0;
+  display:none;
+  justify-content:center;align-items:center;
+  cursor:pointer;z-index:10;
+}
+.tap{opacity:.6;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:.3}50%{opacity:1}}
 
-    .opening{
-      position:absolute; inset:0;
-      display:flex; justify-content:center; align-items:center;
-      background:#0f0f14; z-index:10; cursor:pointer;
-      transition:1s;
-      opacity:0; visibility:hidden;
-    }
-    .opening.show{opacity:1; visibility:visible;}
+/* CARD */
+.card{
+  display:none;
+  max-width:420px;width:90%;
+  padding:35px;border-radius:20px;
+  background:rgba(255,255,255,.05);
+  backdrop-filter:blur(12px);
+  text-align:center;
+}
+button{
+  margin-top:20px;padding:10px 20px;
+  border-radius:999px;border:1px solid rgba(255,255,255,.3);
+  background:transparent;color:white;cursor:pointer;
+}
 
-    .tap-text{opacity:.6; letter-spacing:2px; font-size:14px; animation:pulse 2.5s infinite;}
-    @keyframes pulse{0%,100%{opacity:.3;}50%{opacity:.9;}}
-
-    .card{
-      text-align:center; padding:42px 28px;
-      border-radius:26px; background:rgba(255,255,255,.05);
-      backdrop-filter:blur(14px);
-      box-shadow:0 0 40px rgba(255,120,160,.1);
-      max-width:420px; width:90%;
-      opacity:0; transform:translateY(12px);
-      transition:1.2s ease;
-    }
-    .card.show{opacity:1; transform:translateY(0);}
-
-    h1{font-weight:500; margin-bottom:14px; letter-spacing:1px; font-size:20px;}
-    p{opacity:.85; line-height:1.7; font-size:14px; min-height:80px;}
-
-    button{
-      margin-top:22px; padding:10px 22px;
-      border-radius:999px; border:1px solid rgba(255,255,255,.25);
-      background:transparent; color:#fff; cursor:pointer;
-    }
-
-    .music{margin-top:18px; opacity:.75; font-size:12px;}
-    iframe{border-radius:12px; margin-top:8px; width:100%; height:80px;}
-
-    .ending{
-      position:absolute; inset:0;
-      display:flex; justify-content:center; align-items:center;
-      font-size:18px; letter-spacing:1px;
-      opacity:0; background:#0f0f14;
-      transition:opacity 2s ease;
-      text-align:center; padding:20px;
-    }
-    .ending.show{opacity:1;}
-
-    .heart{position:absolute; font-size:14px; opacity:.12; animation:float 10s linear infinite;}
-    @keyframes float{from{transform:translateY(110vh);}to{transform:translateY(-10vh);}}
-  </style>
+/* ENDING */
+.ending{
+  position:absolute;inset:0;
+  display:flex;justify-content:center;align-items:center;
+  background:#0f0f14;
+  font-size:18px;opacity:0;
+  transition:opacity 2s;
+}
+.ending.show{opacity:1}
+</style>
 </head>
+
 <body>
 
+<!-- PASSWORD -->
 <div class="lock" id="lock">
   <div>enter the date ♡</div>
   <input type="password" id="pass" placeholder="••••••">
 </div>
 
+<!-- TAP -->
 <div class="opening" id="opening" onclick="openCard()">
-  <div class="tap-text">tap to open ♡</div>
+  <div class="tap">tap to open ♡</div>
 </div>
 
+<!-- CARD -->
 <div class="card" id="card">
-  <h1>happy valentine ♡</h1>
+  <h2>happy valentine ♡</h2>
   <p id="text">aku punya sesuatu buat kamu…</p>
   <button onclick="showMessage()">open message</button>
 
-  <div class="music" id="music" style="display:none">
-    not a lot, just forever — adrianne lenker
-    <iframe src="https://open.spotify.com/embed/track/2L9N0zZnd37dwF0sN2E6iC"></iframe>
+  <!-- MUSIC YOUTUBE -->
+  <div id="music" style="display:none;margin-top:15px">
+    <iframe width="0" height="0"
+      src="https://https://youtu.be/Hsl9IZxxY0I?si=4p-Wa_yHzJi0cG4e?autoplay=1&loop=1&playlist=4-9lZc4kW9A"
+      frameborder="0"
+      allow="autoplay">
+    </iframe>
   </div>
 </div>
 
-<div class="ending" id="ending">see you in every lifetime ♡</div>
+<!-- ENDING -->
+<div class="ending" id="ending">
+  see you in every lifetime ♡
+</div>
 
 <script>
 const PASSWORD="080925";
 
 document.getElementById("pass").addEventListener("keypress",e=>{
-  if(e.key==="Enter")checkPass();
-});
-
-function checkPass(){
-  if(document.getElementById("pass").value===PASSWORD){
-    document.getElementById("lock").classList.add("hidden");
-    document.getElementById("opening").classList.add("show");
+  if(e.key==="Enter"){
+    if(e.target.value===PASSWORD){
+      document.getElementById("lock").style.display="none";
+      document.getElementById("opening").style.display="flex";
+    }
   }
-}
+});
 
 const msg=`Dear Kak Adam…
 
-Sayang… Happy valentine yaa...
-aku sayang banget sama kamu.
-i love you the most sayanggggg.
+Sayang… Happy valentine yaa. i know kamu bilang kamu ga prefer buat merayakan valentine krn setiap hari adalah hari kasih sayang. aku setuju, tp di moment ini setidaknya aku mau memberikan apresiasi karena kamu selalu sayang sama aku. Selama 6 bulan kita pacaran, kalo boleh dibilang banyak banget up and down nya. kadang kita berantem, kadang kita beda pendapat. but, its okayyy karena at least, kita tetap menjadi “kita” despite apa yang kita hadapi. Selama pacaran sama kamu, its one of the most beautiful things that i ever had in my life. aku sangat bahagia sayang, i meant it. mungkin juga ini yang jadi alasan aku mau lahir di dunia, karena dicintai sama kamu rasanya se-menyenangkan dan se-membahagiakan ini. kalo aku disuruh lahir lagi dan harus menempuh kesusahan yang sama untuk sama kamu in the end of the time, i definitely will do it again. you are… one of a kind that sees everything about me and still choose to stay. and i am very thankful for that.
+
+sejak sama kamu juga, aku jadi ga sabar untuk terus menantikan masa depan yang dulu takut untuk aku hadapi. makasih ya sayang, udah lahir di dunia ini dan ketemu aku. makasih udah mau menerima aku dan menjadikan aku milikmu. aku sayaaaaang banget sama kamu. aku akan berusaha lebih baik lagi untuk jadi pacar yang baik buat kamu, so that i can make you happy the way you made me happy. temenin aku terus ya sayaaang? untuk 1 tahun, 10 tahun, bahkan 1000 tahun kedepannya. kita sama-sama terus ya kedepannya? aku mau sama kamu terus pokoknyaaaaa. i love you the most sayanggggg.
 
 sincerely,
 yours ♡`;
 
 function openCard(){
-  document.getElementById("opening").classList.remove("show");
-  document.getElementById("card").classList.add("show");
+  document.getElementById("opening").style.display="none";
+  document.getElementById("card").style.display="block";
 }
 
 function showMessage(){
-  typeText(msg,"text",32);
+  typeText(msg,"text",30);
   document.getElementById("music").style.display="block";
 
   setTimeout(()=>{
-    document.getElementById("card").style.opacity=0;
-    setTimeout(()=>document.getElementById("ending").classList.add("show"),1200);
-  },msg.length*32+1500);
+    document.getElementById("card").style.display="none";
+    document.getElementById("ending").classList.add("show");
+  }, msg.length*30 + 2000);
 }
 
 function typeText(text,id,speed){
-  let i=0; const el=document.getElementById(id); el.innerHTML="";
+  let i=0;
+  const el=document.getElementById(id);
+  el.innerHTML="";
   function typing(){
     if(i<text.length){
-      el.innerHTML+=text[i]==="\n"?"<br>":text[i];
-      i++; setTimeout(typing,speed);
+      el.innerHTML += text[i]==="\n"?"<br>":text[i];
+      i++;
+      setTimeout(typing,speed);
     }
   }
   typing();
-}
-
-for(let i=0;i<18;i++){
-  const h=document.createElement("div");
-  h.className="heart"; h.innerText="♡";
-  h.style.left=Math.random()*100+"vw";
-  h.style.animationDuration=7+Math.random()*6+"s";
-  document.body.appendChild(h);
 }
 </script>
 
