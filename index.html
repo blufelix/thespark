@@ -8,7 +8,7 @@
 <style>
 body{
   margin:0;
-  background:#f7f3f5;
+  background:radial-gradient(circle at 15% 20%, #fff7fb 0%, #f7f3f5 42%, #efe6ec 100%);
   color:#2a2a2a;
   font-family:"Georgia",serif;
   display:flex;
@@ -19,21 +19,55 @@ body{
   overflow:hidden;
 }
 
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  width:38vmax;
+  height:38vmax;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:.35;
+  z-index:-2;
+  pointer-events:none;
+  animation:floatBlob 16s ease-in-out infinite;
+}
+
+body::before{
+  background:#ffd8e8;
+  top:-16vmax;
+  left:-12vmax;
+}
+
+body::after{
+  background:#d6e9ff;
+  bottom:-18vmax;
+  right:-10vmax;
+  animation-delay:2.5s;
+}
+
+@keyframes floatBlob{
+  0%,100%{transform:translate(0,0) scale(1)}
+  50%{transform:translate(2.5vmax,-1.5vmax) scale(1.08)}
+}
+
 /* layer bintang */
 .stars{
   position:fixed;
   inset:0;
   pointer-events:none;
   overflow:hidden;
+  z-index:-1;
 }
 
 .star{
   position:absolute;
-  width:4px;
-  height:4px;
-  background:#ffd6e0;
+  width:6px;
+  height:6px;
+  background:radial-gradient(circle, #fff8fb 0%, #ffd6e6 60%, transparent 70%);
   border-radius:50%;
   opacity:0;
+  box-shadow:0 0 14px rgba(255, 196, 218, .65);
   animation:twinkle 4s infinite ease-in-out;
 }
 
@@ -47,25 +81,32 @@ body{
 
 /* kertas lebih lebar */
 .paper{
-  background:white;
+  background:rgba(255,255,255,.82);
+  backdrop-filter: blur(8px);
   padding:48px 48px;
   border-radius:18px;
-  box-shadow:0 25px 70px rgba(0,0,0,0.08);
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:0 25px 70px rgba(70,36,56,0.1);
   text-align:left;
   line-height:1.9;
   min-height:300px;
   position:relative;
 }
 
-/* cursor blink */
-.cursor{
+#text{
+  white-space:pre-wrap;
+  min-height:220px;
+}
+
+#text.typing::after{
+  content:"";
   display:inline-block;
   width:2px;
   height:1em;
-  background:#b76e79;
   margin-left:4px;
+  vertical-align:-1px;
+  background:#b76e79;
   animation:blink 1s infinite;
-  vertical-align:bottom;
 }
 
 @keyframes blink{
@@ -121,7 +162,7 @@ button:hover{background:#fff0f4}
 <div id="card" class="screen">
   <h2>happy valentine ♡</h2>
   <div class="paper">
-    <p id="text"></p><span class="cursor" id="cursor"></span>
+    <p id="text"></p>
   </div>
   <button onclick="showMessage()">open message</button>
 
@@ -173,17 +214,17 @@ function show(id){
 function typeText(text,id,speed){
   let i=0;
   const el=document.getElementById(id);
-  const cursor=document.getElementById("cursor");
-  el.innerHTML="";
+  el.textContent="";
+  el.classList.add("typing");
 
   function typing(){
     if(i<text.length){
-      el.innerHTML += text[i]==="\n"?"<br>":text[i];
+      el.textContent += text[i];
       i++;
       setTimeout(typing,speed);
     }else{
+      el.classList.remove("typing");
       setTimeout(()=>{
-        cursor.style.display="none";
         show("ending");
         document.getElementById("ending").classList.add("show");
       },5000);
@@ -198,7 +239,7 @@ function createStars(){
   const container=document.getElementById("stars");
   container.innerHTML="";
 
-  for(let i=0;i<40;i++){
+  for(let i=0;i<65;i++){
     const s=document.createElement("div");
     s.className="star";
     s.style.left=Math.random()*100+"vw";
