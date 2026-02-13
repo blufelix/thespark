@@ -1,8 +1,141 @@
 <!DOCTYPE html>
-<html>
-<body style="background:black;color:white;display:flex;justify-content:center;align-items:center;height:100vh">
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>for you ♡</title>
 
-<button onclick="alert('WORKING')">TEST BUTTON</button>
+<style>
+body{
+  margin:0;
+  background:#0f0f14;
+  color:white;
+  font-family:Segoe UI,sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  text-align:center;
+}
+
+/* layar */
+.screen{display:none; max-width:420px; padding:30px}
+.show{display:block}
+
+/* tombol */
+button{
+  margin-top:20px;
+  padding:10px 20px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.3);
+  background:transparent;
+  color:white;
+  cursor:pointer;
+}
+
+/* ending */
+#ending{
+  font-size:20px;
+  opacity:0;
+  transition:opacity 2s, background 3s;
+}
+#ending.show{
+  opacity:1;
+  background:#1a0f17;
+}
+.small{font-size:13px; opacity:.6; margin-top:10px}
+</style>
+</head>
+
+<body>
+
+<!-- PASSWORD -->
+<div id="lock" class="screen show">
+  <p>enter the date ♡</p>
+  <input id="pass" type="password">
+</div>
+
+<!-- TAP -->
+<div id="tap" class="screen">
+  <p>tap to open ♡</p>
+</div>
+
+<!-- MESSAGE -->
+<div id="card" class="screen">
+  <h2>happy valentine ♡</h2>
+  <p id="text">aku punya sesuatu buat kamu…</p>
+  <button onclick="showMessage()">open message</button>
+
+  <!-- musik youtube -->
+  <iframe id="music" width="0" height="0"
+  src=""
+  allow="autoplay"></iframe>
+</div>
+
+<!-- ENDING -->
+<div id="ending" class="screen">
+  <div>see you in every lifetime ♡</div>
+  <div class="small">14 · 02 · forever</div>
+</div>
+
+<script>
+const PASSWORD="080925";
+
+const msg=`Dear Kak Adam…
+
+Sayang… Happy valentine yaa. i know kamu bilang kamu ga prefer buat merayakan valentine krn setiap hari adalah hari kasih sayang. aku setuju, tp di moment ini setidaknya aku mau memberikan apresiasi karena kamu selalu sayang sama aku. Selama 6 bulan kita pacaran, kalo boleh dibilang banyak banget up and down nya. kadang kita berantem, kadang kita beda pendapat. but, its okayyy karena at least, kita tetap menjadi “kita” despite apa yang kita hadapi. Selama pacaran sama kamu, its one of the most beautiful things that i ever had in my life. aku sangat bahagia sayang, i meant it. mungkin juga ini yang jadi alasan aku mau lahir di dunia, karena dicintai sama kamu rasanya se-menyenangkan dan se-membahagiakan ini. kalo aku disuruh lahir lagi dan harus menempuh kesusahan yang sama untuk sama kamu in the end of the time, i definitely will do it again. you are… one of a kind that sees everything about me and still choose to stay. and i am very thankful for that.
+
+sejak sama kamu juga, aku jadi ga sabar untuk terus menantikan masa depan yang dulu takut untuk aku hadapi. makasih ya sayang, udah lahir di dunia ini dan ketemu aku. makasih udah mau menerima aku dan menjadikan aku milikmu. aku sayaaaaang banget sama kamu. aku akan berusaha lebih baik lagi untuk jadi pacar yang baik buat kamu, so that i can make you happy the way you made me happy. temenin aku terus ya sayaaang? untuk 1 tahun, 10 tahun, bahkan 1000 tahun kedepannya. kita sama-sama terus ya kedepannya? aku mau sama kamu terus pokoknyaaaaa. i love you the most sayanggggg.
+
+sincerely,
+yours ♡`;
+
+/* password */
+document.getElementById("pass").addEventListener("keypress",e=>{
+  if(e.key==="Enter" && e.target.value===PASSWORD){
+    show("tap");
+  }
+});
+
+/* tap */
+document.getElementById("tap").onclick=()=>show("card");
+
+/* buka pesan */
+function showMessage(){
+
+  // musik mulai
+  document.getElementById("music").src=
+  "https://www.youtube.com/embed/4-9lZc4kW9A?autoplay=1&loop=1&playlist=4-9lZc4kW9A";
+
+  typeText(msg,"text",20);
+
+  setTimeout(()=>{
+    show("ending");
+    document.getElementById("ending").classList.add("show");
+  },20000);
+}
+
+/* util tampil layar */
+function show(id){
+  document.querySelectorAll(".screen").forEach(e=>e.classList.remove("show"));
+  document.getElementById(id).classList.add("show");
+}
+
+/* efek ketik */
+function typeText(text,id,speed){
+  let i=0;
+  const el=document.getElementById(id);
+  el.innerHTML="";
+  function typing(){
+    if(i<text.length){
+      el.innerHTML+=text[i]==="\n"?"<br>":text[i];
+      i++;
+      setTimeout(typing,speed);
+    }
+  }
+  typing();
+}
+</script>
 
 </body>
 </html>
