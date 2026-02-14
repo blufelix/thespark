@@ -53,6 +53,8 @@
     min-height:300px;
     max-height:60vh;
     overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    touch-action:pan-y;
     position:relative;
   }
 
@@ -187,6 +189,13 @@ function typeText(text,id,speed){
   const cursor=document.getElementById("cursor");
   const paper=el.closest(".paper");
   el.innerHTML="";
+  let shouldAutoScroll=true;
+
+  paper.onscroll=()=>{
+    const threshold=24;
+    const isNearBottom=paper.scrollTop+paper.clientHeight>=paper.scrollHeight-threshold;
+    shouldAutoScroll=isNearBottom;
+  };
 
   function insertChunk(chunk,isHighlight=false){
     if(isHighlight){
@@ -213,7 +222,9 @@ function typeText(text,id,speed){
         i++;
       }
       el.appendChild(cursor);
-      paper.scrollTop=paper.scrollHeight;
+      if(shouldAutoScroll){
+        paper.scrollTop=paper.scrollHeight;
+      }
       setTimeout(typing,speed);
     }else{
       setTimeout(()=>{
